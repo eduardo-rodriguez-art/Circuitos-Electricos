@@ -3,7 +3,6 @@ package proyectocircuitos;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Frame;
-import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,7 +20,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 /**
@@ -48,7 +46,12 @@ public class Basicos extends Frame implements ActionListener, Archivos{
     JButton licencia;
     
     JMenuItem archivo;
-    JMenuItem lic;
+    JMenuItem openFile;
+    JMenuItem settings;
+    JMenuItem updates;
+    JMenuItem sistemaOperativo;
+    JMenuItem miLicencia;
+    JMenuItem aboutOf;
     //*
     JLabel re1;
     JLabel re2;
@@ -75,7 +78,7 @@ public class Basicos extends Frame implements ActionListener, Archivos{
     JButton dibujo;
     
     DecimalFormat decimal = new DecimalFormat("#.00");
-    
+    MenuItemActions menuOptions = new MenuItemActions();
     
     public void iniciar(){
         rejilla = new GridLayout();
@@ -89,8 +92,14 @@ public class Basicos extends Frame implements ActionListener, Archivos{
         file = new JMenu("Archivo");
         system = new JMenu("Sistema");
         help = new JMenu("Ayuda");
-        archivo = new JMenuItem("Archivo");
-        lic = new JMenuItem("Lic");
+        //* menu items
+        archivo = new JMenuItem("Guardar Archivo");
+        openFile = new JMenuItem("Abrir Archivo");
+        settings = new JMenuItem("Preferencias");
+        updates = new JMenuItem("Actualizaciones");
+        sistemaOperativo = new JMenuItem("Sistema Operativo");
+        aboutOf = new JMenuItem("Acerca de");
+        miLicencia = new JMenuItem("Licencia");
         
         re1 = new JLabel("Resistencia 1");
         re2 = new JLabel("Resistencia 2");
@@ -131,13 +140,21 @@ public class Basicos extends Frame implements ActionListener, Archivos{
         dibujo = new JButton();
         dibujo.setBackground(Color.green);
         
+        file.setBackground(Color.red);
+        system.setBackground(Color.red);
+        help.setBackground(Color.red);
+        
         //*radiobutton
         grupoBotones.add(serie);
         grupoBotones.add(paralelo);
-        
         //* meter al menubar sus elementos
         file.add(archivo);
-        system.add(lic);
+        file.add(openFile);
+        system.add(settings);
+        system.add(updates);
+        system.add(sistemaOperativo);
+        help.add(miLicencia);
+        help.add(aboutOf);
         menu.add(file);
         menu.add(system);
         menu.add(help);
@@ -196,6 +213,12 @@ public class Basicos extends Frame implements ActionListener, Archivos{
         dibujar.addActionListener(this);
         calcular.addActionListener(this);
         archivo.addActionListener(this);
+        openFile.addActionListener(this);
+        settings.addActionListener(this);
+        updates.addActionListener(this);
+        sistemaOperativo.addActionListener(this);
+        miLicencia.addActionListener(this);
+        aboutOf.addActionListener(this);
         
         setLayout(borde);
         add(menu, BorderLayout.NORTH);
@@ -209,8 +232,8 @@ public class Basicos extends Frame implements ActionListener, Archivos{
     
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource().equals(licencia)){
-            JOptionPane.showMessageDialog(this, "Todos los derechos reservados 2021", "Licencia", 1);
+        if(e.getSource().equals(licencia)||e.getSource().equals(miLicencia)){
+            menuOptions.Licencia();
         }else if(e.getSource().equals(limpiar)){
             Limpiar();
         }else if(e.getSource().equals(dibujar)){
@@ -221,7 +244,16 @@ public class Basicos extends Frame implements ActionListener, Archivos{
             Regresar();
         }else if(e.getSource().equals(archivo)){
             GuardarArchivo();
-            System.out.println("Archivossss");
+        }else if(e.getSource().equals(openFile)){
+            System.out.println("SE GUARDO!");
+        }else if(e.getSource().equals(settings)){
+            menuOptions.setSettings();
+        }else if(e.getSource().equals(updates)){
+            menuOptions.Actualizaciones();
+        }else if(e.getSource().equals(sistemaOperativo)){
+            menuOptions.Operativo();
+        }else if(e.getSource().equals(aboutOf)){
+            menuOptions.AcercaDe();
         }
     }
     
@@ -295,10 +327,15 @@ public class Basicos extends Frame implements ActionListener, Archivos{
 
     @Override
     public void GuardarArchivo() {
-        double r1 = Double.parseDouble(res1.getText());
-        double r2 = Double.parseDouble(res2.getText());
-        double r3 = Double.parseDouble(res3.getText());
-        double voltaje = Double.parseDouble(volta.getText());
+        double r1 = 0, r2 = 0, r3 = 0, voltaje = 0;
+        try {
+            r1 = Double.parseDouble(res1.getText());
+            r2 = Double.parseDouble(res2.getText());
+            r3 = Double.parseDouble(res3.getText());
+        }catch(NumberFormatException e){
+            JOptionPane.showMessageDialog(this, "Algún campo está vacio", "Error al Guardar", JOptionPane.ERROR_MESSAGE);
+        }
+        voltaje = Double.parseDouble(volta.getText());
         String ohm = String.valueOf(restTotalCalculada.getText());
         String amp = String.valueOf(intensidadCalculada.getText());
         

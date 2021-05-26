@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package proyectocircuitos;
 
 import java.awt.BorderLayout;
@@ -14,23 +9,28 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
 /**
  *
  * @author joseeduardorodriguezreyes
  */
-public class Avanzados extends Frame implements ActionListener{
+public class Avanzados extends Frame implements ActionListener, Archivos{
     
     //* barras de menu
     JMenuBar menu;
     JMenu file;
     JMenu system;
     JMenu help;
-    /*JPanel norte;
-    JPanel sur;
-    JPanel subSur;
-    JPanel subNort;*/
+    //* menu Items
+    JMenuItem archivo;
+    JMenuItem openFile;
+    JMenuItem settings;
+    JMenuItem updates;
+    JMenuItem sistemaOperativo;
+    JMenuItem miLicencia;
+    JMenuItem aboutOf;
     JPanel principal;
     JPanel botones;
     JPanel barraComponentes;
@@ -45,7 +45,7 @@ public class Avanzados extends Frame implements ActionListener{
     JButton voltaje;
     
     BorderLayout borde;
-    
+    MenuItemActions menuOptions = new MenuItemActions();
     
     public void init(){
         
@@ -55,6 +55,14 @@ public class Avanzados extends Frame implements ActionListener{
         file = new JMenu("Archivo");
         system = new JMenu("Sistema");
         help = new JMenu("Ayuda");
+        //* menus
+        archivo = new JMenuItem("Guardar Archivo");
+        openFile = new JMenuItem("Abrir Archivo");
+        settings = new JMenuItem("Preferencias");
+        updates = new JMenuItem("Actualizaciones");
+        sistemaOperativo = new JMenuItem("Sistema Operativo");
+        aboutOf = new JMenuItem("Acerca de");
+        miLicencia = new JMenuItem("Licencia");
         
         regresar = new JButton("Regresar");
         limpiar = new JButton("Limpiar");
@@ -69,9 +77,20 @@ public class Avanzados extends Frame implements ActionListener{
         barraComponentes = new JPanel();
         barraComponentes.setBackground(Color.red);
         
+        file.setBackground(Color.red);
+        system.setBackground(Color.red);
+        help.setBackground(Color.red);
+        file.add(archivo);
+        file.add(openFile);
+        system.add(settings);
+        system.add(updates);
+        system.add(sistemaOperativo);
+        help.add(miLicencia);
+        help.add(aboutOf);
         menu.add(file);
         menu.add(system);
         menu.add(help);
+        
         
         //* botones a un panel
         botones.setLayout(new GridLayout(1,4));
@@ -97,6 +116,13 @@ public class Avanzados extends Frame implements ActionListener{
         regresar.addActionListener(this);
         limpiar.addActionListener(this);
         calcular.addActionListener(this);
+        archivo.addActionListener(this);
+        openFile.addActionListener(this);
+        settings.addActionListener(this);
+        updates.addActionListener(this);
+        sistemaOperativo.addActionListener(this);
+        miLicencia.addActionListener(this);
+        aboutOf.addActionListener(this);
         
         setSize(500, 300);
         setVisible(true);
@@ -115,6 +141,20 @@ public class Avanzados extends Frame implements ActionListener{
             System.out.println("limpia");
         }else if(e.getSource().equals(calcular)){
             System.out.println("calcula");
+        }else if(e.getSource().equals(archivo)){
+            GuardarArchivo();
+        }else if(e.getSource().equals(openFile)){
+            AbrirArchivo();
+        }else if(e.getSource().equals(settings)){
+            menuOptions.setSettings();
+        }else if(e.getSource().equals(updates)){
+            menuOptions.Actualizaciones();
+        }else if(e.getSource().equals(sistemaOperativo)){
+            menuOptions.Operativo();
+        }else if(e.getSource().equals(aboutOf)){
+            menuOptions.AcercaDe();
+        }else if(e.getSource().equals(miLicencia)){
+            menuOptions.Licencia();
         }
     }
     
@@ -122,6 +162,18 @@ public class Avanzados extends Frame implements ActionListener{
     
     public void setPrincipal(PrincipalFrame prf){
         this.prf = prf;
+    }
+
+    //* Implementacion de la Interfaz, cada metodo actua de manera diferente
+    // Falta su implementacion
+    @Override
+    public void GuardarArchivo() {
+        System.out.println("Se guardo");    
+    }
+
+    @Override
+    public void AbrirArchivo() {
+        System.out.println("Se abrio el archivo");
     }
     
 }
