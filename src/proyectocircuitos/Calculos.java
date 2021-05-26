@@ -48,4 +48,5 @@ public class Calculos {
         double resistenciaTotal = 1 / denominador;
         return resistenciaTotal;
     }
+    
 }
