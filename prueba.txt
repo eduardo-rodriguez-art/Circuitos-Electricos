@@ -1,0 +1,1 @@
+Resistencia 1 32.0Resistencia 2 11.0Resistencia 3 12.0Voltaje 9.0Intensidad 1.85 AmpResistencia Total 4.87 Ohms

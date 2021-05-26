@@ -3,11 +3,16 @@ package proyectocircuitos;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Frame;
+import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -23,7 +28,7 @@ import javax.swing.JTextField;
  *
  * @author joseeduardorodriguezreyes
  */
-public class Basicos extends Frame implements ActionListener{
+public class Basicos extends Frame implements ActionListener, Archivos{
     //* menus
     JMenuBar menu;
     JMenu file;
@@ -67,9 +72,10 @@ public class Basicos extends Frame implements ActionListener{
     BorderLayout borde;
     GridLayout rejilla;
     GridLayout rejilla2;
-    JTextArea dibujo;
+    JButton dibujo;
     
     DecimalFormat decimal = new DecimalFormat("#.00");
+    
     
     public void iniciar(){
         rejilla = new GridLayout();
@@ -122,7 +128,7 @@ public class Basicos extends Frame implements ActionListener{
         botones = new JPanel();
         subSur = new JPanel();
         subNort = new JPanel();
-        dibujo = new JTextArea();
+        dibujo = new JButton();
         dibujo.setBackground(Color.green);
         
         //*radiobutton
@@ -189,6 +195,7 @@ public class Basicos extends Frame implements ActionListener{
         limpiar.addActionListener(this);
         dibujar.addActionListener(this);
         calcular.addActionListener(this);
+        archivo.addActionListener(this);
         
         setLayout(borde);
         add(menu, BorderLayout.NORTH);
@@ -207,11 +214,14 @@ public class Basicos extends Frame implements ActionListener{
         }else if(e.getSource().equals(limpiar)){
             Limpiar();
         }else if(e.getSource().equals(dibujar)){
-            System.out.println("Se va a dibujar");
+            DibujarImagen();
         }else if(e.getSource().equals(calcular)){
             Calculos();
         }else if(e.getSource().equals(regresar)){
             Regresar();
+        }else if(e.getSource().equals(archivo)){
+            GuardarArchivo();
+            System.out.println("Archivossss");
         }
     }
     
@@ -221,10 +231,15 @@ public class Basicos extends Frame implements ActionListener{
     }
     
     public void Calculos(){
-        double r1 = Double.parseDouble(res1.getText());
-        double r2 = Double.parseDouble(res2.getText());
-        double r3 = Double.parseDouble(res3.getText());
-
+        double r1=0, r2=0, r3=0;
+        
+        try {
+            r1 = Double.parseDouble(res1.getText());
+            r2 = Double.parseDouble(res2.getText());
+            r3 = Double.parseDouble(res3.getText());
+        }catch(NumberFormatException ex){
+            JOptionPane.showMessageDialog(this, "Algun campo de texto esta vacio", "Campos de texto vacios", JOptionPane.ERROR_MESSAGE);
+        }
         // se llama al constructor para asiganr valores 
         Calculos calc = new Calculos(r1, r2, r3);
 
@@ -243,9 +258,25 @@ public class Basicos extends Frame implements ActionListener{
     }
     
     public double Intensidad(double voltaje, double resTotal){
-        return voltaje/resTotal;
+        double inten = 0;
+        try {
+            inten = voltaje/resTotal;
+        }catch(ArithmeticException a){
+            JOptionPane.showMessageDialog(this, "La resistencia total es 0", "Resistencia total nula", JOptionPane.WARNING_MESSAGE);
+        }
+        
+        return inten;
     }
     
+    public void DibujarImagen(){
+        if (serie.isSelected()) {
+            ImageIcon iconobtn = new ImageIcon("src/imagenes/series1.PNG");
+            dibujo.setIcon(iconobtn);
+        } else if (paralelo.isSelected()) {
+            ImageIcon iconobtn = new ImageIcon("src/imagenes/paralelo1.png");
+            dibujo.setIcon(iconobtn);
+        }
+    }
     public void Limpiar(){
         res1.setText("");
         res2.setText("");
@@ -260,5 +291,33 @@ public class Basicos extends Frame implements ActionListener{
     
     public void setPrincipal(PrincipalFrame prin){
         this.prin = prin;
+    }
+
+    @Override
+    public void GuardarArchivo() {
+        double r1 = Double.parseDouble(res1.getText());
+        double r2 = Double.parseDouble(res2.getText());
+        double r3 = Double.parseDouble(res3.getText());
+        double voltaje = Double.parseDouble(volta.getText());
+        String ohm = String.valueOf(restTotalCalculada.getText());
+        String amp = String.valueOf(intensidadCalculada.getText());
+        
+        String name = String.valueOf(JOptionPane.showInputDialog(null, "Como deseas nombra el archivo", "Guardar Archivo", JOptionPane.QUESTION_MESSAGE));
+        
+        try (BufferedWriter myBuffer = new BufferedWriter(new FileWriter(name+".txt"))) {
+            myBuffer.write("Resistencia 1 "+r1);
+            myBuffer.write("\nResistencia 2 "+r2);
+            myBuffer.write("\nResistencia 3 "+r3);
+            myBuffer.write("\nVoltaje "+voltaje);
+            myBuffer.write("\nIntensidad "+amp);
+            myBuffer.write("\nResistencia Total "+ohm);
+            myBuffer.close();
+        } catch (IOException ex) {
+        }
+    }
+
+    @Override
+    public void AbrirArchivo() {
+         System.out.println("Se abrio");
     }
 }
