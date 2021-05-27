@@ -14,7 +14,6 @@ public class Calculos {
     private double firstResistance;
     private double secondResistance;
     private double thirdResistance;
-//TAMBIEN PUEDE SER UN ARREGLO DE RESISTENCIAS
 
     public Calculos(double firstResistance, double secondResistance, double thirdResistance) {
         this.firstResistance = firstResistance;

@@ -9,16 +9,18 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Frame;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
-import javax.swing.JTextArea;
 
 /**
  *
@@ -26,7 +28,7 @@ import javax.swing.JTextArea;
  */
 public class PrincipalFrame extends Frame implements ActionListener{
     BorderLayout borde;
-    JTextArea imagen;
+    JLabel imagen;
     JMenuBar menu;
     JMenu file;
     JMenu edit;
@@ -46,9 +48,8 @@ public class PrincipalFrame extends Frame implements ActionListener{
     JSeparator linea;
     
     public void Init(){
-        
-        
-        imagen = new JTextArea();
+        imagen = new JLabel();
+        imagen.setSize(250, 300);
         imagen.setBackground(Color.red);
         borde = new BorderLayout();
         
@@ -88,7 +89,9 @@ public class PrincipalFrame extends Frame implements ActionListener{
         menu.add(file);
         menu.add(edit);
         menu.setForeground(Color.red);
-        
+        ImageIcon iconobtn = new ImageIcon("src/imagenes/logo.jpg");
+        imagen.setIcon(iconobtn);
+        norte.setLayout(new GridLayout(1,1));
         norte.add(imagen);
         sur.add(basico);
         sur.add(avanzado);
@@ -104,7 +107,6 @@ public class PrincipalFrame extends Frame implements ActionListener{
         add(sur, BorderLayout.SOUTH);
         
         setSize(500, 220);
-        
         
         setVisible(true);
         

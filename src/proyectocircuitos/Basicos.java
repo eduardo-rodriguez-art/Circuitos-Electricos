@@ -6,13 +6,19 @@ import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -245,7 +251,7 @@ public class Basicos extends Frame implements ActionListener, Archivos{
         }else if(e.getSource().equals(archivo)){
             GuardarArchivo();
         }else if(e.getSource().equals(openFile)){
-            System.out.println("SE GUARDO!");
+            AbrirArchivo();
         }else if(e.getSource().equals(settings)){
             menuOptions.setSettings();
         }else if(e.getSource().equals(updates)){
@@ -355,6 +361,27 @@ public class Basicos extends Frame implements ActionListener, Archivos{
 
     @Override
     public void AbrirArchivo() {
-         System.out.println("Se abrio");
+        JFileChooser chosen = new JFileChooser();
+        chosen.showSaveDialog(openFile);
+        
+        File archivo = chosen.getSelectedFile();
+        
+        try {
+            String cadena = leerArchivo(archivo);
+            JOptionPane.showMessageDialog(principal, "\n"+cadena+"\n", "Abrir archivo", JOptionPane.OK_OPTION);
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(principal, "Imposible leer el archivo", "No lectura", JOptionPane.ERROR);
+        }
+    }
+    
+    public String leerArchivo(File arch) throws IOException{
+        String textoLeido = "";
+        try(BufferedReader in = new BufferedReader(new FileReader(arch))){
+            String linea;
+            while((linea = in.readLine()) != null){
+                textoLeido += (linea+"\n"); 
+            }
+        }
+        return textoLeido;
     }
 }

@@ -14,16 +14,6 @@ import javax.swing.JOptionPane;
 public class MenuItemActions {
     String sSistemaOperativo = System.getProperty("os.name");
     
-    /*
-    file.add(archivo); //ya estan dados en la interface
-        file.add(openFile);//interface
-        system.add(settings);
-        system.add(updates);
-        system.add(sistemaOperativo);
-        help.add(miLicencia);
-        help.add(aboutOf);
-    */
-    
     public void setSettings(){
         JOptionPane.showMessageDialog(null, "Version 1.0", "Propiedades", JOptionPane.OK_OPTION);
     }
