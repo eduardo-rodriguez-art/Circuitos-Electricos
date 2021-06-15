@@ -42,7 +42,7 @@ public class Avanzados extends Frame implements ActionListener, Archivos{
     JButton regresar;
     
     JButton resistencia;
-    JButton voltaje;
+    JButton intensidad;
     
     BorderLayout borde;
     MenuItemActions menuOptions = new MenuItemActions();
@@ -69,7 +69,9 @@ public class Avanzados extends Frame implements ActionListener, Archivos{
         calcular = new JButton("Calcular");
         // botones de componentes
         resistencia = new JButton("Resistencia");
-        voltaje = new JButton("Voltaje");
+        
+        //cambiarlo a intensidad, para calcularla dependiento de las respuestas del cliente
+        intensidad = new JButton("Intensidad");
         
         principal = new JPanel();
         principal.setBackground(Color.orange);
@@ -101,7 +103,7 @@ public class Avanzados extends Frame implements ActionListener, Archivos{
         //* añadir a la paleta de componentes
         barraComponentes.setLayout(new GridLayout(2,1));
         barraComponentes.add(resistencia);
-        barraComponentes.add(voltaje);
+        barraComponentes.add(intensidad);
         
         principal.setLayout(new GridLayout());
         
@@ -124,6 +126,9 @@ public class Avanzados extends Frame implements ActionListener, Archivos{
         miLicencia.addActionListener(this);
         aboutOf.addActionListener(this);
         
+        //acciones de los calculos
+        intensidad.addActionListener(this);
+        
         setSize(500, 300);
         setVisible(true);
     }
@@ -132,12 +137,22 @@ public class Avanzados extends Frame implements ActionListener, Archivos{
         prf.setVisible(true);
         dispose();
     }
+    
+    public void AparecerServidor(){
+        ServidorGui sg = new ServidorGui();
+        sg.Init();
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource().equals(regresar)){
             Regresar();
-        }else if(e.getSource().equals(limpiar)){
+        }
+        else if(e.getSource().equals(intensidad)){
+            System.out.println("Servidor");
+            AparecerServidor();
+        }
+        else if(e.getSource().equals(limpiar)){
             System.out.println("limpia");
         }else if(e.getSource().equals(calcular)){
             System.out.println("calcula");

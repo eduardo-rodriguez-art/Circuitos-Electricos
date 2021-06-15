@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="ProyectoCircuitos">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/dist/ProyectoCircuitos.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
