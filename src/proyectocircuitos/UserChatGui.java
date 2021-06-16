@@ -40,6 +40,8 @@ public class UserChatGui extends JFrame implements ActionListener, UserRecibeLis
         Enviar=new JButton("Enviar");
         Rejilla=new GridLayout(4,1);
         Etiqueta=new JLabel("Mensajes");
+        
+        Mensajes.setEditable(false);
         MensajesBar=new JScrollPane(Mensajes);
         
         setLayout(Rejilla);
@@ -50,7 +52,7 @@ public class UserChatGui extends JFrame implements ActionListener, UserRecibeLis
         
         Enviar.addActionListener(this);
         
-        setSize(240,320);
+        setSize(300,380);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         //lineas de la guia
         User.setUserRecibeListener(this);
@@ -69,9 +71,9 @@ public class UserChatGui extends JFrame implements ActionListener, UserRecibeLis
         }
     }
 
+    ///** este es el metodo que recoge la informacion del cliente!
     @Override
     public void UserRecibeEvent(UserEngine UE, String S) {
-        Mensajes.append("Cliente: "+S+"\n");
+        Mensajes.append("Cliente:\n"+S+"\n");
     }
 }
-

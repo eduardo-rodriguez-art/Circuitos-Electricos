@@ -29,6 +29,7 @@ public class ServidorGui extends JFrame implements ActionListener, UserConnected
     JLabel Etiqueta;
     JButton Iniciar;
     FlowLayout Flujo;
+    
     public void Init(){
         Port=new JTextField();
         Port.setColumns(4);
@@ -45,7 +46,8 @@ public class ServidorGui extends JFrame implements ActionListener, UserConnected
         Iniciar.addActionListener(this);
         
         setSize(250,150);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setResizable(false);
         setVisible(true);
     }

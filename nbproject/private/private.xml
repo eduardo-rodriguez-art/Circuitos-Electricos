@@ -3,11 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/Users/joseeduardorodriguezreyes/Documents/ApacheNetBeans/ProyectoCircuitos/src/proyectocircuitos/ServidorEngine.java</file>
+            <file>file:/Users/joseeduardorodriguezreyes/Documents/ApacheNetBeans/ProyectoCircuitos/src/proyectocircuitos/Basicos.java</file>
             <file>file:/Users/joseeduardorodriguezreyes/Documents/ApacheNetBeans/ProyectoCircuitos/src/proyectocircuitos/Avanzados.java</file>
-            <file>file:/Users/joseeduardorodriguezreyes/Documents/ApacheNetBeans/ProyectoCircuitos/src/proyectocircuitos/ServidorGUI.java</file>
-            <file>file:/Users/joseeduardorodriguezreyes/Documents/ApacheNetBeans/ProyectoCircuitos/src/proyectocircuitos/UserEngine.java</file>
-            <file>file:/Users/joseeduardorodriguezreyes/Documents/ApacheNetBeans/ProyectoCircuitos/src/proyectocircuitos/UserChatGUI.java</file>
+            <file>file:/Users/joseeduardorodriguezreyes/Documents/ApacheNetBeans/ProyectoCircuitos/src/proyectocircuitos/UserChatGui.java</file>
+            <file>file:/Users/joseeduardorodriguezreyes/Documents/ApacheNetBeans/ProyectoCircuitos/src/proyectocircuitos/ClienteGui.java</file>
+            <file>file:/Users/joseeduardorodriguezreyes/Documents/ApacheNetBeans/ProyectoCircuitos/src/proyectocircuitos/ServidorGui.java</file>
         </group>
     </open-files>
 </project-private>

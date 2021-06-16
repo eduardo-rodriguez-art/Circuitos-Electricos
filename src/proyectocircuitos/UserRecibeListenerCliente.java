@@ -9,8 +9,6 @@ package proyectocircuitos;
  *
  * @author joseeduardorodriguezreyes
  */
-public interface UserRecibeListener {
-
-    void UserRecibeEvent(UserEngine UE, String S);
-    
+public interface UserRecibeListenerCliente {
+    void UserRecibeEventCliente(UserEngineCliente UE, String S);
 }

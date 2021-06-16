@@ -44,6 +44,7 @@ public class PrincipalFrame extends Frame implements ActionListener{
     JPanel sur;
     JButton basico;
     JButton avanzado;
+    JButton serial;
     JButton exit;
     JSeparator linea;
     
@@ -74,6 +75,7 @@ public class PrincipalFrame extends Frame implements ActionListener{
         sur.setLayout(new FlowLayout());
         basico = new JButton("Circuito Basico");
         avanzado = new JButton("Circuito Avanzado");
+        serial = new JButton("Comunicacion serial");
         exit = new JButton("Salir");
         
         file.add(newFile);
@@ -95,17 +97,20 @@ public class PrincipalFrame extends Frame implements ActionListener{
         norte.add(imagen);
         sur.add(basico);
         sur.add(avanzado);
+        sur.add(serial);
         sur.add(exit);
         
         //** botones sobre el cual aplica el listener
         exit.addActionListener(this);
         basico.addActionListener(this);
         avanzado.addActionListener(this);
+        serial.addActionListener(this);
         
         add(menu, BorderLayout.NORTH);
         add(norte,BorderLayout.CENTER);
         add(sur, BorderLayout.SOUTH);
         
+        this.pack();
         setSize(500, 220);
         
         setVisible(true);
@@ -116,7 +121,10 @@ public class PrincipalFrame extends Frame implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         if(e.getSource().equals(exit)){
             Salir();
-        }else if(e.getSource().equals(basico)){
+        }else if(e.getSource().equals(serial)){
+            System.out.println("Serial");
+        }
+        else if(e.getSource().equals(basico)){
             Basicos b = new Basicos();
             b.iniciar();
             b.setPrincipal(this);

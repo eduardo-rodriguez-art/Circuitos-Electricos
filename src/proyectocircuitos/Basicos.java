@@ -291,6 +291,7 @@ public class Basicos extends Frame implements ActionListener, Archivos{
         double voltaje = Double.parseDouble(volta.getText());
         
         double intensidad = Intensidad(voltaje, resTotal);
+        
         restTotalCalculada.setText(String.valueOf(decimal.format(resTotal))+" Ohms");
         intensidadCalculada.setText(String.valueOf(decimal.format(intensidad))+" Amp");
     }
@@ -304,6 +305,7 @@ public class Basicos extends Frame implements ActionListener, Archivos{
         }
         
         return inten;
+        
     }
     
     public void DibujarImagen(){
