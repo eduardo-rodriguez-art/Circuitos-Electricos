@@ -39,6 +39,8 @@ public class ProcesosGUI extends JFrame implements ActionListener, RecibeListene
     JButton Establecer;
     JButton Encender;
     JButton Apagar;
+    JButton conectar;
+    
     String PortNames[];
     int Paridades[]={0,1,2};
     int BaudeRates[]={9600,19200,38400,57600,115200};
@@ -82,7 +84,9 @@ public class ProcesosGUI extends JFrame implements ActionListener, RecibeListene
         DataBit=new JComboBox(SDataBits);
         DB=DataBits[0];
         DataBit.addActionListener(this);
-                
+             
+        conectar = new JButton("Conectar con arduino");
+        
         Norte=new JPanel();
         Norte.setLayout(new FlowLayout());
         Norte.add(Puertos);
@@ -102,17 +106,19 @@ public class ProcesosGUI extends JFrame implements ActionListener, RecibeListene
         LED.setBackground(Color.red);
         
         regresar.addActionListener(this);
+        conectar.addActionListener(this);
         LED.setOpaque(true);
         Sur.add(Establecer);
         Sur.add(LED);
         Sur.add(Encender);
         Sur.add(Apagar);
         Sur.add(regresar);
+        Sur.add(conectar);
         setLayout(new GridLayout(2,1));
         add(Norte);
         add(Sur);
         setSize(600,150);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setVisible(true);
 }
 
@@ -154,6 +160,8 @@ public class ProcesosGUI extends JFrame implements ActionListener, RecibeListene
             
         }else if(e.getSource().equals(regresar)){
             Regresar();
+        }else if(e.getSource().equals(conectar)){
+            Conectar();
         }
     }
 
@@ -172,6 +180,11 @@ public class ProcesosGUI extends JFrame implements ActionListener, RecibeListene
     public void Regresar(){
         prf.setVisible(true);
         dispose();
+    }
+    
+    public void Conectar(){
+        Prueba p = new Prueba();
+        p.createAndShowGUI();
     }
 
 }

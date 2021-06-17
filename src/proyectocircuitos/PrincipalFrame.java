@@ -69,7 +69,7 @@ public class PrincipalFrame extends JFrame implements ActionListener{
         sur = new JPanel();
         sur.setLayout(new FlowLayout());
         basico = new JButton("Circuito Basico");
-        avanzado = new JButton("Circuito Avanzado");
+        avanzado = new JButton("Circuito Basado en Servidor");
         serial = new JButton("Comunicacion serial");
         exit = new JButton("Salir");
         
@@ -106,7 +106,7 @@ public class PrincipalFrame extends JFrame implements ActionListener{
         add(sur, BorderLayout.SOUTH);
         
         this.pack();
-        setSize(500, 220);
+        setSize(600, 420);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
         
