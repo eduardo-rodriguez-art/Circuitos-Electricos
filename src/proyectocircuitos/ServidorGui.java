@@ -31,7 +31,7 @@ public class ServidorGui extends JFrame implements ActionListener, UserConnected
     FlowLayout Flujo;
     
     public void Init(){
-        Port=new JTextField();
+        Port=new JTextField("5000");
         Port.setColumns(4);
         Etiqueta=new JLabel("Número de puerto de escucha");
         Iniciar=new JButton("Iniciar");
@@ -47,7 +47,7 @@ public class ServidorGui extends JFrame implements ActionListener, UserConnected
         
         setSize(250,150);
         //setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setResizable(false);
         setVisible(true);
     }

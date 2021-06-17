@@ -6,12 +6,15 @@ import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
@@ -20,7 +23,9 @@ import javax.swing.JTextField;
  *
  * @author joseeduardorodriguezreyes
  */
-public class Avanzados extends Frame implements ActionListener, Archivos{
+// UserConnectedListener, UserRecibeListener
+public class Avanzados extends JFrame implements ActionListener, Archivos,UserConnectedListener, UserRecibeListener{
+    String v1,v2,v3,v4;
     
     //* barras de menu
     JMenuBar menu;
@@ -47,6 +52,7 @@ public class Avanzados extends Frame implements ActionListener, Archivos{
     
     JButton calcularCliente;
     JButton myServer;
+    JButton obtenerValores;
     
     //* informacion que viene del cliente
     JLabel txtTitleServer;
@@ -72,7 +78,37 @@ public class Avanzados extends Frame implements ActionListener, Archivos{
     BorderLayout borde;
     MenuItemActions menuOptions = new MenuItemActions();
     
+    
+    static UserEngine user;
+    static ServidorEngine server = new ServidorEngine(5000);
+    static ArrayList<UserEngine> usuarios;
+    
+    //UserChatGui chat;
+    String cadenaTotal;
+    public Avanzados(){
+        
+    }
+    
+    RelacionClienteInterfaz red;
+    /*
+    public void AgregarCliente(Cliente Ce){
+        if (client==null){
+
+            client=new ArrayList();
+        }
+        client.add(Ce);
+    }
+    }*/
+    
     public void init(){
+        //chat = new UserChatGui();
+        usuarios = new ArrayList();
+        Avanzados adv;
+        adv=new Avanzados();
+        server.setConnectedListener(adv);
+        server.start();
+        
+        
         this.setTitle("Calculo por Parametros del cliente");
         borde = new BorderLayout();
         
@@ -93,9 +129,10 @@ public class Avanzados extends Frame implements ActionListener, Archivos{
         limpiar = new JButton("Limpiar");
         calcular = new JButton("Calcular");
         
+        
         //INICIAR ELEMENTOS QUE VIENEN DEL SERVIDOR
         txtTitleServer = new JLabel(" Estos Elementos vienen del servicio Cliente");
-        txtVacio = new JLabel("");
+        txtVacio = new JLabel("Informacion del servidor");
         txtRest1 = new JLabel("Resistencia 1 ");
         txtRest2 = new JLabel("Resistencia 2 ");
         txtRest3 = new JLabel("Resistencia 3 ");
@@ -123,6 +160,7 @@ public class Avanzados extends Frame implements ActionListener, Archivos{
         //cambiarlo a intensidad, para calcularla dependiento de las respuestas del cliente
         calcularCliente = new JButton("Realizar calculo");
         myServer = new JButton("Conectar con el servidor");
+        obtenerValores = new JButton("Registrar valores del cliente");
         
         principal = new JPanel();
         principal.setBackground(Color.orange);
@@ -154,6 +192,7 @@ public class Avanzados extends Frame implements ActionListener, Archivos{
         barraComponentes.setLayout(new GridLayout(3,1));
         barraComponentes.add(calcularCliente);
         barraComponentes.add(myServer);
+        barraComponentes.add(obtenerValores);
         
         principal.setLayout(new GridLayout(8,2));
         principal.add(txtTitleServer);
@@ -194,7 +233,8 @@ public class Avanzados extends Frame implements ActionListener, Archivos{
         //acciones de los calculos
         calcularCliente.addActionListener(this);
         myServer.addActionListener(this);
-        
+        obtenerValores.addActionListener(this);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setSize(500, 300);
         setVisible(true);
     }
@@ -205,8 +245,8 @@ public class Avanzados extends Frame implements ActionListener, Archivos{
     }
     
     public void AparecerServidor(){
-        ServidorGui sg = new ServidorGui();
-        sg.Init();
+        /*ServidorGui sg = new ServidorGui();
+        sg.Init();*/
         
     }
 
@@ -215,23 +255,121 @@ public class Avanzados extends Frame implements ActionListener, Archivos{
         myClient.Init();
     }
     
+    PrincipalFrame prf;
+    
+    public void setPrincipal(PrincipalFrame prf){
+        this.prf = prf;
+    }
+    
+    
+    @Override
+    public void UserConnectedEvent(UserEngine UE) {
+        usuarios.add(UE);
+        System.out.println("Usuario conectado");
+        UE.setUserRecibeListener(this);
+        UE.start();
+    }
+    
+    ///** este es el metodo que recoge la informacion del cliente!
+    @Override
+    public void UserRecibeEvent(UserEngine UE, String S) {
+        int comando;
+        //EnviarValores;100;100;100;30;
+        comando = S.indexOf("EnviarValores", 0);
+        if(comando==0){
+            int r1=S.indexOf(";", 14);
+            int r2 = S.indexOf(";", r1+1);
+            int r3 = S.indexOf(";", r2+1);
+            int v = S.indexOf(";", r3+1);
+            String res1 = S.substring(14, r1);
+            String res2 = S.substring(r1+1, r2);
+            String res3 = S.substring(r2+1, r3);
+            String volta = S.substring(r3+1, v);
+            
+            red = new RelacionClienteInterfaz(res1,res2,res3,volta);
+            red.Imprime();
+            cadenaTotal = red.getR1()+red.getR2()+red.getR3()+red.getV();
+            UE.sendMessage("Agregados");
+            JOptionPane.showMessageDialog(null, "Recibido", "Valores Agregados", JOptionPane.OK_OPTION);       
+        }
+        else{
+            UE.sendMessage("Comando no reconocido");
+        }
+        
+    }
+    
+    public static void Registro(String c1, String c2, String c3, String c4){
+        
+    }
+    //RelacionClienteInterfaz b;
+    /*public void RealizarCalculo(){
+        
+        double z1=0,z2=0,z3=0,z4=0;
+        double resTotal=0.0, intensity;
+        try {
+            z1 = Double.parseDouble(b.getR1());
+            z2 = Double.parseDouble(b.getR2());
+            z3 = Double.parseDouble(b.getR3());
+            z4 = Double.parseDouble(b.getV()); //voltaje
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Algun valor es nulo", "Valores nulos", JOptionPane.ERROR_MESSAGE);
+        }
+        
+        Calculos cal = new Calculos(z1,z2,z3);
+        
+        if(serie.isSelected()){
+            resTotal = cal.ResistenciaCircuitoSerie();
+        }
+        else if(paralelo.isSelected()){
+            resTotal = cal.ResistenciaCircuitoParalelo();
+        }
+        
+        intensity = Intensidad(z4, resTotal);
+        System.out.println("intensidad "+intensity);
+        System.out.println("res total "+resTotal);
+        //TOTALRESISTENCIA.setText(String.valueOf(resTotal));
+        //INTENSIDADTOTAL.setText(String.valueOf(intensity));
+    }*/
+    
+    public double Intensidad(double voltaje, double resTotal){
+        double inten = 0;
+        try {
+            inten = voltaje/resTotal;
+        }catch(ArithmeticException a){
+            JOptionPane.showMessageDialog(this, "La resistencia total es 0", "Resistencia total nula", JOptionPane.WARNING_MESSAGE);
+        }
+        
+        return inten;
+        
+    }
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource().equals(regresar)){
             Regresar();
         }
+        else if(e.getSource().equals(myServer)){
+            AparecerCliente();
+            AparecerServidor();
+        }else if(e.getSource().equals(obtenerValores)){
+            //Rellenar();
+            //Registrar();
+            /*rest1.setText(getV1());
+            rest2.setText(getV2());
+            rest3.setText(getV3());
+            myVolt.setText(getV4());*/
+            JOptionPane.showMessageDialog(null, "Recibido", "Parametros recibidos", JOptionPane.OK_OPTION);
+        }
         else if(e.getSource().equals(calcularCliente)){
             System.out.println("CALCULOS");
-            
-        }
-        else if(e.getSource().equals(myServer)){
-            AparecerServidor();
-            AparecerCliente();
+            //RealizarCalculo();
+            System.out.println(cadenaTotal);
         }
         else if(e.getSource().equals(limpiar)){
-            System.out.println("limpia");
+            Limpiar();
         }else if(e.getSource().equals(calcular)){
-            System.out.println("calcula");
+            //RealizarCalculo();
+            System.out.println(cadenaTotal);
         }else if(e.getSource().equals(archivo)){
             GuardarArchivo();
         }else if(e.getSource().equals(openFile)){
@@ -249,13 +387,7 @@ public class Avanzados extends Frame implements ActionListener, Archivos{
         }
     }
     
-    PrincipalFrame prf;
-    
-    public void setPrincipal(PrincipalFrame prf){
-        this.prf = prf;
-    }
-
-    //* Implementacion de la Interfaz, cada metodo actua de manera diferente
+    // Implementacion de la Interfaz, cada metodo actua de manera diferente
     // Falta su implementacion
     @Override
     public void GuardarArchivo() {
@@ -266,5 +398,15 @@ public class Avanzados extends Frame implements ActionListener, Archivos{
     public void AbrirArchivo() {
         System.out.println("Se abrio el archivo");
     }
+    
+    public void Limpiar() {
+        rest1.setText(" ");
+        rest2.setText(" ");
+        rest3.setText(" ");
+        myVolt.setText(" ");
+        TOTALRESISTENCIA.setText("");
+        INTENSIDADTOTAL.setText("");
+    }
+
     
 }

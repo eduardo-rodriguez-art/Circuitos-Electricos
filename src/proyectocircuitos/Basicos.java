@@ -19,6 +19,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -32,7 +33,7 @@ import javax.swing.JTextField;
  *
  * @author joseeduardorodriguezreyes
  */
-public class Basicos extends Frame implements ActionListener, Archivos{
+public class Basicos extends JFrame implements ActionListener, Archivos{
     //* menus
     JMenuBar menu;
     JMenu file;
@@ -231,7 +232,7 @@ public class Basicos extends Frame implements ActionListener, Archivos{
         add(principal, BorderLayout.CENTER);
         add(botones, BorderLayout.SOUTH);
         //add(sur, new GridLayout(1,3));
-        
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setSize(500,300);
         //setVisible(true);
     }
@@ -278,7 +279,7 @@ public class Basicos extends Frame implements ActionListener, Archivos{
         }catch(NumberFormatException ex){
             JOptionPane.showMessageDialog(this, "Algun campo de texto esta vacio", "Campos de texto vacios", JOptionPane.ERROR_MESSAGE);
         }
-        // se llama al constructor para asiganr valores 
+        // se llama al constructor para asignar valores 
         Calculos calc = new Calculos(r1, r2, r3);
 
         double resTotal = 0.0;

@@ -26,7 +26,7 @@ import javax.swing.JSeparator;
  *
  * @author joseeduardorodriguezreyes
  */
-public class PrincipalFrame extends Frame implements ActionListener{
+public class PrincipalFrame extends JFrame implements ActionListener{
     BorderLayout borde;
     JLabel imagen;
     JMenuBar menu;
@@ -112,7 +112,7 @@ public class PrincipalFrame extends Frame implements ActionListener{
         
         this.pack();
         setSize(500, 220);
-        
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
         
     }
@@ -122,19 +122,23 @@ public class PrincipalFrame extends Frame implements ActionListener{
         if(e.getSource().equals(exit)){
             Salir();
         }else if(e.getSource().equals(serial)){
-            System.out.println("Serial");
-        }
-        else if(e.getSource().equals(basico)){
-            Basicos b = new Basicos();
-            b.iniciar();
-            b.setPrincipal(this);
-            b.setVisible(true);
+            Serial ser = new Serial();
+            ser.Init();
+            ser.setPrincipal(this);
+            ser.setVisible(true);
             setVisible(false);
-        }else if(e.getSource().equals(avanzado)){
+        }
+        else if(e.getSource().equals(avanzado)){
             Avanzados ad = new Avanzados();
             ad.init();
             ad.setPrincipal(this);
             ad.setVisible(true);
+            setVisible(false);
+        }else if(e.getSource().equals(basico)){
+            Basicos b = new Basicos();
+            b.iniciar();
+            b.setPrincipal(this);
+            b.setVisible(true);
             setVisible(false);
         }
     }

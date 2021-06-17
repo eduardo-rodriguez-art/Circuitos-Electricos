@@ -7,12 +7,13 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.util.ArrayList;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -21,7 +22,11 @@ import javax.swing.JTextField;
  *
  * @author joseeduardorodriguezreyes
  */
+
+
+
 public class ClienteGui extends JFrame implements ActionListener, UserRecibeListener {
+    
     JLabel IPLabel;
     JLabel PuertoLabel;
     JLabel MensajesLabel;
@@ -43,6 +48,7 @@ public class ClienteGui extends JFrame implements ActionListener, UserRecibeList
     UserEngine User;
     Socket Conexion;
     InetSocketAddress IPAddress;
+    UserRecibeListener U;
     
     //* elementos para enviar al servidor y este realize lo necesario
     JLabel txtRest1;
@@ -53,21 +59,17 @@ public class ClienteGui extends JFrame implements ActionListener, UserRecibeList
     JTextField rest2;
     JTextField rest3;
     JTextField myVolt;
-    // buttonGroup
-    ButtonGroup grupoBotones;
-    JRadioButton serie;
-    JRadioButton paralelo;
+  
     
     public void Init()
     {
-        
         IPLabel=new JLabel("IP");
         PuertoLabel=new JLabel("Puerto");
         MensajesLabel=new JLabel("Mensajes");
         MensajeLabel=new JLabel("Mensaje");
-        IP=new JTextField();
+        IP=new JTextField("");
         IP.setColumns(20);
-        Puerto=new JTextField();
+        Puerto=new JTextField("5000");
         Puerto.setColumns(4);
         Mensaje=new JTextField();
         Mensajes=new JTextArea();
@@ -94,12 +96,6 @@ public class ClienteGui extends JFrame implements ActionListener, UserRecibeList
         myVolt = new JTextField();
         myVolt.setColumns(8);
         
-        /*grupoBotones = new ButtonGroup();
-        serie = new JRadioButton("Serie");
-        paralelo = new JRadioButton("Paralelo");
-        grupoBotones.add(serie);
-        grupoBotones.add(paralelo);*/
-        
         Norte1.setLayout(new GridLayout(2,2));
         Norte1.add(IPLabel);
         Norte1.add(PuertoLabel);
@@ -110,6 +106,8 @@ public class ClienteGui extends JFrame implements ActionListener, UserRecibeList
         Norte.add(Conectar);
         add(Norte,BorderLayout.NORTH);
         
+        
+        Mensajes.setText("Enviar valores de resistencias y voltajes en\n###;###;###;##");
         Mensajes.setEditable(false);
         
         Centro.setLayout(new BorderLayout());
@@ -127,22 +125,25 @@ public class ClienteGui extends JFrame implements ActionListener, UserRecibeList
         Sur.add(rest3);
         Sur.add(txtVolt);
         Sur.add(myVolt);
-        //Sur.add(serie);
-        //Sur.add(paralelo);
         Sur.add(Enviar);
-        /*Sur.add(MensajeLabel);
-        Sur.add(Mensaje);
-        Sur.add(Enviar);*/
         
         add(Sur,BorderLayout.SOUTH);
         
         Conectar.addActionListener(this);
         Enviar.addActionListener(this);
         setTitle("Cliente");
-        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        
         setSize(400,400);
         setVisible(true);
         
+    }
+    
+    //se lo envia al servidor
+    public void EnviarCadena() {
+        //EnviarValores;100;100;100;30;
+        String s = "EnviarValores;"+rest1.getText()+";"+rest2.getText()+";"+rest3.getText()+";"+myVolt.getText()+";";
+        User.sendMessage(s);
     }
     
     @Override
@@ -154,24 +155,28 @@ public class ClienteGui extends JFrame implements ActionListener, UserRecibeList
             //linea del cliente
             //User.sendMessage(Mensaje.getText());
             //Mensaje.setText("");
-            String cadenaResistencias = rest1.getText()+"\n"+rest2.getText()+"\n"+rest3.getText()+"\n";
+            /*String cadenaResistencias = rest1.getText()+"\n"+rest2.getText()+"\n"+rest3.getText()+"\n";
             Mensajes.append(cadenaResistencias+myVolt.getText());
-            User.sendMessage(cadenaResistencias + myVolt.getText());
+            User.sendMessage(cadenaResistencias + myVolt.getText());*/
+            EnviarCadena();
         }
         else if(e.getSource().equals(Conectar)){
+            //System.out.println("Conectado");
             Conectar();
-            User.setUserRecibeListener(this);
-            User.start();
+            
         }
     } 
 
     @Override
     public void UserRecibeEvent(UserEngine UE, String S) {
-        Mensajes.append("Servidor "+S+"\n");
+        //JOptionPane.showMessageDialog(null,"Servidor "+S+"\n" );
+        //Mensajes.append("Servidor "+S+"\n");
+        System.out.println("Servidor "+S+"\n");
     }
     
     public void Conectar(){
         int PUERTO = Integer.parseInt(Puerto.getText());
+        //int PUERTO = 5000;
         String DIRECCION = IP.getText();
         Conexion = new Socket();
         IPAddress = new InetSocketAddress(DIRECCION, PUERTO);
@@ -179,11 +184,12 @@ public class ClienteGui extends JFrame implements ActionListener, UserRecibeList
         try {
             Conexion.connect(IPAddress);
             User = new UserEngine(Conexion);
+            User.setUserRecibeListener(this);
+            User.start();
         }catch(IOException e){
             System.out.println("Sin respuesta");
         }
-        
+     
     }
 
-    
 }
