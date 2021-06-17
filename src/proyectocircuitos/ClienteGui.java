@@ -107,7 +107,7 @@ public class ClienteGui extends JFrame implements ActionListener, UserRecibeList
         add(Norte,BorderLayout.NORTH);
         
         
-        Mensajes.setText("Enviar valores de resistencias y voltajes en\n###;###;###;##");
+        Mensajes.setText("Enviar valores de resistencias en 3 cifras\nEnviar valor de voltaje en 2 cifras");
         Mensajes.setEditable(false);
         
         Centro.setLayout(new BorderLayout());
@@ -138,7 +138,6 @@ public class ClienteGui extends JFrame implements ActionListener, UserRecibeList
         setVisible(true);
         
     }
-    
     //se lo envia al servidor
     public void EnviarCadena() {
         //EnviarValores;100;100;100;30;
@@ -149,15 +148,7 @@ public class ClienteGui extends JFrame implements ActionListener, UserRecibeList
     @Override
     public void actionPerformed(ActionEvent e) {
         
-        if (e.getSource().equals(Enviar))
-        {
-            //Mensajes.append("Cliente: "+Mensaje.getText()+"\n");
-            //linea del cliente
-            //User.sendMessage(Mensaje.getText());
-            //Mensaje.setText("");
-            /*String cadenaResistencias = rest1.getText()+"\n"+rest2.getText()+"\n"+rest3.getText()+"\n";
-            Mensajes.append(cadenaResistencias+myVolt.getText());
-            User.sendMessage(cadenaResistencias + myVolt.getText());*/
+        if (e.getSource().equals(Enviar)){
             EnviarCadena();
         }
         else if(e.getSource().equals(Conectar)){
