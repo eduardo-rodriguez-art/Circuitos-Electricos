@@ -5,8 +5,8 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
-import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -15,9 +15,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
 
 /**
  *
@@ -26,7 +23,7 @@ import javax.swing.JTextField;
 // UserConnectedListener, UserRecibeListener
 public class Avanzados extends JFrame implements ActionListener,UserConnectedListener, UserRecibeListener{
     String v1,v2,v3,v4;
-    
+    DecimalFormat decimal = new DecimalFormat("#.000");
     Circuitos circ = new Circuitos();
     
     //* barras de menu
@@ -217,8 +214,8 @@ public class Avanzados extends JFrame implements ActionListener,UserConnectedLis
             double resisParalelo = 1/suma1;
             inte1 = b1/resisSerie;
             inte2 = b1/resisParalelo;
-            String i = "La Intensidad total en serie es: "+inte1+" Amp\nLa Intensidad total en paralelo es: "+inte2+" Amp";
-            String r = "La Resistencia Total en serie es: "+resisSerie+" Ohms\nLa Resistencia Total en paralelo es: "+resisParalelo+" Ohms";
+            String i = "La Intensidad total en serie es: "+decimal.format(inte1)+" Amp\nLa Intensidad total en paralelo es: "+decimal.format(inte2)+" Amp";
+            String r = "La Resistencia Total en serie es: "+decimal.format(resisSerie)+" Ohms\nLa Resistencia Total en paralelo es: "+decimal.format(resisParalelo)+" Ohms";
             JOptionPane.showMessageDialog(null, "Recibido", "Valores Agregados", JOptionPane.OK_OPTION);       
             JOptionPane.showMessageDialog(this, cad+"\n"+r+"\n"+i , "Resultados", JOptionPane.OK_OPTION);
             

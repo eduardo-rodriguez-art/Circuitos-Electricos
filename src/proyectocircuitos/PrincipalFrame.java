@@ -1,14 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package proyectocircuitos;
 
+import SerialProc.ProcesosGUI;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
-import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -122,11 +117,11 @@ public class PrincipalFrame extends JFrame implements ActionListener{
         if(e.getSource().equals(exit)){
             Salir();
         }else if(e.getSource().equals(serial)){
-            Serial ser = new Serial();
-            ser.Init();
-            ser.setPrincipal(this);
-            ser.setVisible(true);
-            setVisible(false);
+            ProcesosGUI proceso = new ProcesosGUI();
+            proceso.Init();
+            proceso.setPrincipal(this);
+            proceso.setVisible(true);
+            this.setVisible(false);
         }
         else if(e.getSource().equals(avanzado)){
             Avanzados ad = new Avanzados();
